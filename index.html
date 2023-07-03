@@ -1,149 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Noprime Leaks</title>
-    <style>
-        body {
-            background-color: #1f1f1f;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
+  <title>Configs</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        h1 {
-            color: #ff4d4d;
-        }
+    h1 {
+      text-align: center;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
 
-        .tab-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
+    .button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
 
-        .tab {
-            display: none;
-        }
+    .page-buttons {
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-        .tab-links {
-            display: flex;
-        }
+    .page-buttons button {
+      margin: 0 5px;
+      padding: 4px 8px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-        .tab-links a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-            background-color: #ff4d4d;
-            border-radius: 5px 5px 0 0;
-        }
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
 
-        .tab-content {
-            display: none;
-            background-color: #2b2b2b;
-            padding: 20px;
-            border-radius: 0 5px 5px 5px;
-        }
+    .search-input {
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+      margin-right: 8px;
+    }
 
-        .visible {
-            display: block;
-        }
-
-        .file-list {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-        }
-
-        .file-item {
-            width: calc(33.33% - 10px);
-            margin-bottom: 20px;
-            background-color: #323232;
-            border-radius: 5px;
-            padding: 10px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .file-link {
-            color: #ff4d4d;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+    .search-button {
+      padding: 8px 16px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Noprime Leaks</h1>
-        <div class="tab-container">
-            <div class="tab-links">
-                <a href="#" class="tab-link visible" data-tab="files-tab">Configs</a>
-                <a href="#" class="tab-link" data-tab="credits-tab">Credits</a>
-                <a href="#" class="tab-link" data-tab="discord-tab">Discord</a>
-            </div>
-        </div>
-        <div class="tab-content visible" id="files-tab">
-            <p>Click on the links below to download the configs:</p>
-            <ul class="file-list" id="fileList"></ul>
-        </div>
-        <div class="tab-content" id="credits-tab">
-            <h2 style="color: #ff4d4d; font-weight: bold;">Website made by 0prime and Crimsonfied</h2>
-        </div>
-        <div class="tab-content" id="discord-tab">
-            <h2 style="color: #ff4d4d;">0prime's Official Server:</h2>
-            <p><a href="https://discord.gg/vapeprivate">discord.gg/vapeprivate</a></p>
-            <h2 style="color: #ff4d4d;">Crimsonfied's Official Server:</h2>
-            <p><a href="https://discord.gg/EVYaMYAMJp">discord.gg/EVYaMYAMJp</a></p>
-        </div>
-    </div>
+  <h1>Configs</h1>
 
-    <script>
-        const tabLinks = document.querySelectorAll('.tab-link');
-        const tabContents = document.querySelectorAll('.tab-content');
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search...">
+    <button id="searchButton" class="search-button">Search</button>
+  </div>
 
-        tabLinks.forEach(tabLink => {
-            tabLink.addEventListener('click', (event) => {
-                event.preventDefault();
+  <div id="fileList"></div>
 
-                const selectedTab = event.target.dataset.tab;
+  <div class="page-buttons">
+    <button onclick="changePage(-1)">Previous</button>
+    <button onclick="changePage(1)">Next</button>
+  </div>
 
-                // Hide all tab contents
-                tabContents.forEach(tabContent => {
-                    tabContent.classList.remove('visible');
-                });
+  <script>
+    const filesPerPage = 130;
+    let currentPage = 1;
+    let filteredFiles = [];
 
-                // Show selected tab content
-                document.getElementById(selectedTab).classList.add('visible');
-            });
-        });
+    function displayFiles(files) {
+      const fileList = document.getElementById('fileList');
+      fileList.innerHTML = '';
 
-        // Fetch the file list from the repository using GitHub's REST API
-        fetch('https://api.github.com/repos/CrimsonfiedOfficial/NoprimeLeaksWebsite/contents')
-            .then(response => response.json())
-            .then(data => {
-                const fileList = document.getElementById('fileList');
+      const startIndex = (currentPage - 1) * filesPerPage;
+      const endIndex = currentPage * filesPerPage;
 
-                // Iterate over the files and create list items with download links
-                data.forEach(file => {
-                    if (file.type === 'file' && file.name !== 'index.html') {
-                        const listItem = document.createElement('li');
-                        const fileItem = document.createElement('div');
-                        const link = document.createElement('a');
-                        fileItem.classList.add('file-item');
-                        link.classList.add('file-link');
-                        link.href = file.download_url;
-                        link.textContent = file.name;
-                        fileItem.appendChild(link);
-                        listItem.appendChild(fileItem);
-                        fileList.appendChild(listItem);
-                    }
-                });
-            });
-    </script>
+      const buttonContainer = document.createElement('div');
+      buttonContainer.classList.add('button-container');
+
+      for (let i = startIndex; i < endIndex && i < files.length; i++) {
+        const file = files[i];
+
+        const downloadButton = document.createElement('a');
+        downloadButton.href = file.download_url;
+        downloadButton.textContent = file.name;
+        downloadButton.download = file.name;
+        downloadButton.classList.add('button');
+
+        buttonContainer.appendChild(downloadButton);
+      }
+
+      fileList.appendChild(buttonContainer);
+    }
+
+    function changePage(page) {
+      currentPage += page;
+      currentPage = Math.max(1, currentPage);
+
+      displayFiles(filteredFiles);
+    }
+
+    function searchFiles() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      filteredFiles = [];
+
+      if (searchInput === '') {
+        filteredFiles = files;
+      } else {
+        filteredFiles = files.filter(file => file.name.toLowerCase().includes(searchInput));
+      }
+
+      currentPage = 1;
+      displayFiles(filteredFiles);
+    }
+
+    document.getElementById('searchButton').addEventListener('click', searchFiles);
+
+    fetch('https://api.github.com/repos/CrimsonfiedOfficial/ConfigStorage/contents')
+      .then(response => response.json())
+      .then(data => {
+        files = data.filter(file => file.type === 'file' && (file.name.endsWith('.zip') || file.name.endsWith('.rar')));
+
+        filteredFiles = files;
+        displayFiles(filteredFiles);
+      })
+      .catch(error => {
+        console.error('Error fetching file list:', error);
+        const fileList = document.getElementById('fileList');
+        fileList.textContent = 'Error fetching file list. Please try again later.';
+      });
+  </script>
 </body>
 </html>
