@@ -19,22 +19,14 @@
             padding: 20px;
         }
 
-        .file-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .file-list li {
+        .tab-container {
+            display: flex;
+            justify-content: flex-end;
             margin-bottom: 10px;
-        }
-
-        .file-list a {
-            color: #ff4d4d;
-            text-decoration: none;
         }
 
         .tab {
-            margin-bottom: 10px;
+            display: none;
         }
 
         .tab-links {
@@ -50,49 +42,62 @@
         }
 
         .tab-content {
+            display: none;
             background-color: #2b2b2b;
             padding: 20px;
             border-radius: 0 5px 5px 5px;
         }
 
-        .discord-preview {
-            max-width: 400px;
-            margin-bottom: 20px;
+        .visible {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Noprime Leaks</h1>
-        <div class="tab">
+        <div class="tab-container">
             <div class="tab-links">
-                <a href="#files-tab">Files</a>
-                <a href="#credits-tab">Credits</a>
-                <a href="#discord-tab">Discord</a>
+                <a href="#" class="tab-link" data-tab="files-tab">Configs</a>
+                <a href="#" class="tab-link" data-tab="credits-tab">Credits</a>
+                <a href="#" class="tab-link" data-tab="discord-tab">Discord</a>
             </div>
-            <div class="tab-content" id="files-tab">
-                <p>Click on the links below to download the files:</p>
-                <ul class="file-list" id="fileList"></ul>
-            </div>
-            <div class="tab-content" id="credits-tab">
-                <h2 style="color: #ff4d4d; font-weight: bold;">Website made by 0prime and Crimsonfied</h2>
-            </div>
-            <div class="tab-content" id="discord-tab">
-                <h2 style="color: #ff4d4d;">0prime's Official Server:</h2>
-                <p><a href="https://discord.gg/vapeprivate">discord.gg/vapeprivate</a></p>
-                <div class="discord-preview">
-                    <img src="discord-preview-1.png" alt="Discord Preview 1">
-                </div>
-                <h2 style="color: #ff4d4d;">Crimsonfied's Official Server:</h2>
-                <p><a href="https://discord.gg/EVYaMYAMJp">discord.gg/EVYaMYAMJp</a></p>
-                <div class="discord-preview">
-                    <img src="discord-preview-2.png" alt="Discord Preview 2">
-                </div>
-            </div>
+        </div>
+        <div class="tab-content" id="files-tab">
+            <p>Click on the links below to download the configs:</p>
+            <ul class="file-list" id="fileList"></ul>
+        </div>
+        <div class="tab-content" id="credits-tab">
+            <h2 style="color: #ff4d4d; font-weight: bold;">Website made by 0prime and Crimsonfied</h2>
+        </div>
+        <div class="tab-content" id="discord-tab">
+            <h2 style="color: #ff4d4d;">0prime's Official Server:</h2>
+            <p><a href="https://discord.gg/vapeprivate">discord.gg/vapeprivate</a></p>
+            <h2 style="color: #ff4d4d;">Crimsonfied's Official Server:</h2>
+            <p><a href="https://discord.gg/EVYaMYAMJp">discord.gg/EVYaMYAMJp</a></p>
         </div>
     </div>
 
     <script>
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabLinks.forEach(tabLink => {
+            tabLink.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const selectedTab = event.target.dataset.tab;
+
+                // Hide all tab contents
+                tabContents.forEach(tabContent => {
+                    tabContent.classList.remove('visible');
+                });
+
+                // Show selected tab content
+                document.getElementById(selectedTab).classList.add('visible');
+            });
+        });
+
         // Fetch the file list from the repository using GitHub's REST API
         fetch('https://api.github.com/repos/CrimsonfiedOfficial/NoprimeLeaksWebsite/contents')
             .then(response => response.json())
