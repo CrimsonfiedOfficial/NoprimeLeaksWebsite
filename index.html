@@ -51,6 +51,30 @@
         .visible {
             display: block;
         }
+
+        .file-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .file-item {
+            width: calc(33.33% - 10px);
+            margin-bottom: 20px;
+            background-color: #323232;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .file-link {
+            color: #ff4d4d;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -108,10 +132,14 @@
                 data.forEach(file => {
                     if (file.type === 'file' && file.name !== 'index.html') {
                         const listItem = document.createElement('li');
+                        const fileItem = document.createElement('div');
                         const link = document.createElement('a');
+                        fileItem.classList.add('file-item');
+                        link.classList.add('file-link');
                         link.href = file.download_url;
                         link.textContent = file.name;
-                        listItem.appendChild(link);
+                        fileItem.appendChild(link);
+                        listItem.appendChild(fileItem);
                         fileList.appendChild(listItem);
                     }
                 });
