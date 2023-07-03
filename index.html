@@ -2,22 +2,55 @@
 <html>
 <head>
     <title>Noprime Leaks</title>
+    <style>
+        body {
+            background-color: #1f1f1f;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #ff4d4d;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-list li {
+            margin-bottom: 10px;
+        }
+
+        .file-list a {
+            color: #ff4d4d;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Noprime Leaks</h1>
-    <p>Click on the links below to download the files:</p>
-    <ul id="fileList"></ul>
+    <div class="container">
+        <h1>Welcome to Noprime Leaks</h1>
+        <p>Click on the links below to download the files:</p>
+        <ul class="file-list" id="fileList"></ul>
+    </div>
 
     <script>
         // Fetch the file list from the repository using GitHub's REST API
-        fetch('https://api.github.com/repos/CrimsonfiedOfficial/NoprimeLeaksWebsite/contents/')
+        fetch('https://api.github.com/repos/CrimsonfiedOfficial/NoprimeLeaksWebsite/contents')
             .then(response => response.json())
             .then(data => {
                 const fileList = document.getElementById('fileList');
 
                 // Iterate over the files and create list items with download links
                 data.forEach(file => {
-                    if (file.type === 'file') {
+                    if (file.type === 'file' && file.name !== 'index.html') {
                         const listItem = document.createElement('li');
                         const link = document.createElement('a');
                         link.href = file.download_url;
