@@ -32,13 +32,64 @@
             color: #ff4d4d;
             text-decoration: none;
         }
+
+        .tab {
+            margin-bottom: 10px;
+        }
+
+        .tab-links {
+            display: flex;
+        }
+
+        .tab-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #ff4d4d;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab-content {
+            background-color: #2b2b2b;
+            padding: 20px;
+            border-radius: 0 5px 5px 5px;
+        }
+
+        .discord-preview {
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Noprime Leaks</h1>
-        <p>Click on the links below to download the files:</p>
-        <ul class="file-list" id="fileList"></ul>
+        <div class="tab">
+            <div class="tab-links">
+                <a href="#files-tab">Files</a>
+                <a href="#credits-tab">Credits</a>
+                <a href="#discord-tab">Discord</a>
+            </div>
+            <div class="tab-content" id="files-tab">
+                <p>Click on the links below to download the files:</p>
+                <ul class="file-list" id="fileList"></ul>
+            </div>
+            <div class="tab-content" id="credits-tab">
+                <h2 style="color: #ff4d4d; font-weight: bold;">Website made by 0prime and Crimsonfied</h2>
+            </div>
+            <div class="tab-content" id="discord-tab">
+                <h2 style="color: #ff4d4d;">0prime's Official Server:</h2>
+                <p><a href="https://discord.gg/vapeprivate">discord.gg/vapeprivate</a></p>
+                <div class="discord-preview">
+                    <img src="discord-preview-1.png" alt="Discord Preview 1">
+                </div>
+                <h2 style="color: #ff4d4d;">Crimsonfied's Official Server:</h2>
+                <p><a href="https://discord.gg/EVYaMYAMJp">discord.gg/EVYaMYAMJp</a></p>
+                <div class="discord-preview">
+                    <img src="discord-preview-2.png" alt="Discord Preview 2">
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
